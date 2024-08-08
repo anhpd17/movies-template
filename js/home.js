@@ -131,6 +131,33 @@ const renderCarousel = async () => {
     document.getElementById("carousel-inner").innerHTML = queryInnerCar;
 };
 
+const render2 = async () => {
+    let online = await getMovies(1501, 4);
+    let onlineListDiv = document.getElementById('online-list');
+    let query2 = "";
+    for (let index = 0; index < 4; index++) {
+        const element = online[index];
+        query2 += `<div class="col-md-3 pe-0">
+        <div class="stream_2im clearfix position-relative">
+          <div class="stream_2im1 clearfix">
+            <div class="grid clearfix">
+                      <figure class="effect-jazz mb-0">
+                        <a href="#"><img src=${element.poster_url} class="w-100" alt="abc"></a>
+                      </figure>
+                  </div>
+          </div>
+          <div class="stream_2im2 position-absolute w-100 h-100 p-3 top-0  clearfix">
+           <h6 class="font_14 col_red">${element.year}</h6>
+           <h4 class="text-white">${element.name}</h4>
+           <h6 class="font_14 mb-0 text-white"><a class="text-white me-1 font_60 align-middle lh-1" href="#"><i class="fa fa-play-circle"></i></a> SEASON 1 - 2020</h6>
+          </div>
+        </div>
+      </div>`
+    }
+    onlineListDiv.innerHTML = query2;
+};
+
+
 const loadMoreMovies = async (pageNumber) => {
     _pageNumber++;
     render(_pageNumber);
@@ -139,6 +166,7 @@ const loadMoreMovies = async (pageNumber) => {
 const startWebsite = async () => {
     await render(_pageNumber);
     await renderCarousel();
+    await render2();
 
     // Sự kiện click nút more
     let moreBtn = document.getElementById("load-more");
