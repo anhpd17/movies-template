@@ -1,8 +1,12 @@
 import { getMovies } from "./moviesAPI.js";
 
-let _movies = [];
-let _pageNumber = 1;
+let _movies = []; // Danh sách phim
+let _pageNumber = 1; // Số trang
 
+/**
+ * Hàm lấy dữ liệu và hiển thị phim
+ * @param {*} pageNumber Số trang
+ */
 const render = async (pageNumber = 1) => {
     // Lúc vào cần lấy dữ liệu phim -> show
     let movies = await getMovies(pageNumber);
@@ -69,6 +73,9 @@ const render = async (pageNumber = 1) => {
     moviesListDiv.innerHTML += query;
 };
 
+/**
+ * Hàm hiển thị dữ liệu lên carousel
+ */
 const renderCarousel = async () => {
     let queryBtn = "";
     let queryInnerCar = "";
@@ -131,18 +138,25 @@ const renderCarousel = async () => {
     document.getElementById("carousel-inner").innerHTML = queryInnerCar;
 };
 
-const loadMoreMovies = async (pageNumber) => {
+/**
+ * Hàm load thêm phim khi click nút "Load More"
+ */
+const loadMoreMovies = async () => {
     _pageNumber++;
     render(_pageNumber);
 };
 
+/**
+ * Hàm gọi các hàm khi bắt đầu truy cập website
+ */
 const startWebsite = async () => {
     await render(_pageNumber);
     await renderCarousel();
 
     // Sự kiện click nút more
-    let moreBtn = document.getElementById("load-more");
-    moreBtn.addEventListener("click", loadMoreMovies);
+    document
+        .getElementById("load-more")
+        .addEventListener("click", loadMoreMovies);
 };
 
 startWebsite();
