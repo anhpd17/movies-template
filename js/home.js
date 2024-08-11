@@ -16,7 +16,7 @@ const render = async (pageNumber = 1) => {
     let query = "";
     movies.forEach((movie) => {
         query += `
-            <div class="col-lg-2 pe-0 col-md-4">
+            <div class="col-lg-2 pe-0 col-md-4 movie-item">
                 <div class="spec_1im clearfix position-relative">
                     <div class="spec_1imi clearfix">
                         <img src="${movie.poster_url}" class="w-100" alt="abc" />
@@ -71,6 +71,21 @@ const render = async (pageNumber = 1) => {
         `;
     });
     moviesListDiv.innerHTML += query;
+    setEventClickForMovieItem();
+};
+
+/**
+ * Hàm gán sự kiện click vào phim -> Chuyển sang trang detail với query slug phim
+ */
+const setEventClickForMovieItem = () => {
+    let movieItems = document.getElementsByClassName("movie-item");
+    for (let index = 0; index < movieItems.length; index++) {
+        const element = movieItems[index];
+        element.addEventListener("click", () => {
+            let slug = _movies[index].slug;
+            window.location.href = `./detail.html?slug=${slug}`;
+        });
+    }
 };
 
 /**
