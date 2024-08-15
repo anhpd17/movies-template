@@ -1,4 +1,5 @@
 import { getMoviesBySlug } from "./moviesAPI.js";
+import { getKeywordAndSearch } from "./searchFunction.js";
 
 /**
  * Hiển thị thông tin chi tiết của phim
@@ -28,4 +29,5 @@ const renderMovieDetail = async () => {
     document.getElementById("list-episodes").innerHTML = queryEpisodes;
 };
 
-renderMovieDetail();
+await renderMovieDetail();
+getKeywordAndSearch();

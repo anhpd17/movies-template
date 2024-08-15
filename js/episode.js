@@ -1,8 +1,8 @@
-import { getMovies } from "./moviesAPI.js";
+import { getSeriesMovie } from "./moviesAPI.js";
 import { getKeywordAndSearch } from "./searchFunction.js";
 
 let _movies = []; // Danh sách phim
-let _pageNumber = 1; // Số trang
+let _pageNumber = 100; // Số trang
 
 /**
  * Hàm lấy dữ liệu và hiển thị phim
@@ -10,7 +10,7 @@ let _pageNumber = 1; // Số trang
  */
 const render = async (pageNumber = 1) => {
     // Lúc vào cần lấy dữ liệu phim -> show
-    let movies = await getMovies(pageNumber);
+    let movies = await getSeriesMovie(pageNumber);
     _movies = [..._movies, ...movies];
     // Sau khi lấy xong dữ liệu -> render
     let moviesListDiv = document.getElementById("movies-list");
@@ -20,7 +20,7 @@ const render = async (pageNumber = 1) => {
             <div class="col-lg-2 pe-0 col-md-4 movie-item">
                 <div class="spec_1im clearfix position-relative">
                     <div class="spec_1imi clearfix">
-                        <img src="${movie.poster_url}" class="w-100" alt="abc" />
+                        <img src="https://phimimg.com/${movie.poster_url}" class="w-100" alt="abc" />
                     </div>
                     <div
                         class="spec_1imi1 row m-0 w-100 h-100 clearfix position-absolute bg_col top-0"
@@ -74,7 +74,6 @@ const render = async (pageNumber = 1) => {
     moviesListDiv.innerHTML += query;
     setEventClickForMovieItem();
 };
-
 /**
  * Hàm gán sự kiện click vào phim -> Chuyển sang trang detail với query slug phim
  */
@@ -88,72 +87,6 @@ const setEventClickForMovieItem = () => {
         });
     }
 };
-
-/**
- * Hàm hiển thị dữ liệu lên carousel
- */
-const renderCarousel = async () => {
-    let queryBtn = "";
-    let queryInnerCar = "";
-    for (let index = 0; index < 4; index++) {
-        const element = _movies[index];
-        queryBtn += `
-            <button
-                type="button"
-                data-bs-target="#carouselExampleCaptions"
-                data-bs-slide-to="${index}"
-                class="${index == 0 ? "active" : ""}"
-                aria-label="Slide ${index + 1}"
-            ></button>
-        `;
-        queryInnerCar += `
-            <div class="carousel-item ${index == 0 ? "active" : ""}">
-                <img
-                    src="${element.thumb_url}"
-                    class="d-block w-100"
-                    alt="..."
-                />
-                <div class="carousel-caption d-md-block">
-                    <h5 class="text-white-50 release ps-2 fs-6">
-                        NEW RELEASES
-                    </h5>
-                    <h1 class="font_80 mt-4">
-                        ${element.name}
-                    </h1>
-                    <h6 class="text-white">
-                        <span
-                            class="rating d-inline-block rounded-circle me-2 col_green"
-                            >6.1</span
-                        >
-                        <span class="col_green"
-                            >IMDB SCORE</span
-                        >
-                        <span class="mx-3">${element.year}</span>
-                        <span class="col_red"
-                            >Romance, Action</span
-                        >
-                    </h6>
-                    <p class="mt-4">
-                        Certain but she but shyness why cottage.
-                        Guy the put instrument sir entreaties
-                        affronting.
-                    </p>
-                    <h5 class="mb-0 mt-4 text-uppercase">
-                        <a class="button" href="#"
-                            ><i
-                                class="fa fa-youtube-play me-1"
-                            ></i>
-                            Watch Trailer</a
-                        >
-                    </h5>
-                </div>
-            </div>
-        `;
-    }
-    document.getElementById("carousel-indicators").innerHTML = queryBtn;
-    document.getElementById("carousel-inner").innerHTML = queryInnerCar;
-};
-
 /**
  * Hàm load thêm phim khi click nút "Load More"
  */
@@ -167,8 +100,6 @@ const loadMoreMovies = async () => {
  */
 const startWebsite = async () => {
     await render(_pageNumber);
-    await renderCarousel();
-
     // Sự kiện click nút more
     document
         .getElementById("load-more")
