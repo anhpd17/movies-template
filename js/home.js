@@ -1,4 +1,4 @@
-import { getMovies } from "./moviesAPI.js";
+import { getMovies, getTVShows } from "./moviesAPI.js";
 import { getKeywordAndSearch } from "./searchFunction.js";
 
 let _movies = []; // Danh sách phim
@@ -163,11 +163,56 @@ const loadMoreMovies = async () => {
 };
 
 /**
+ * Hàm load TV show trong phần watch Show now
+ */
+const loadTVShowPart = async () => {
+    const tvShows = await getTVShows(1, 4);
+    let query = "";
+    console.log(tvShows);
+    tvShows.forEach((tvShow) => {
+        query += `
+            <div class="col-md-3 pe-0">
+                <div class="stream_2im clearfix position-relative">
+                    <div class="stream_2im1 clearfix">
+                        <div class="grid clearfix">
+                            <figure class="effect-jazz mb-0">
+                                <a href="#"
+                                    ><img
+                                        src="https://phimimg.com/${tvShow.poster_url}"
+                                        class="w-100"
+                                        alt="abc"
+                                /></a>
+                            </figure>
+                        </div>
+                    </div>
+                    <div
+                        class="stream_2im2 position-absolute w-100 h-100 p-3 top-0 clearfix"
+                    >
+                        <h6 class="font_14 col_red">ROMANCE, DRAMA</h6>
+                        <h4 class="text-white">${tvShow.name}</h4>
+                        <h6 class="font_14 mb-0 text-white">
+                            <a
+                                class="text-white me-1 font_60 align-middle lh-1"
+                                href="#"
+                                ><i class="fa fa-play-circle"></i
+                            ></a>
+                            ${tvShow.year}
+                        </h6>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    document.getElementById("tv-show-now").innerHTML = query;
+};
+
+/**
  * Hàm gọi các hàm khi bắt đầu truy cập website
  */
 const startWebsite = async () => {
     await render(_pageNumber);
     await renderCarousel();
+    await loadTVShowPart();
 
     // Sự kiện click nút more
     document

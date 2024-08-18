@@ -47,10 +47,10 @@ export const getCartoonMovie = async (pageNumber) => {
 };
 
 // Danh sách phim bộ
-export const getTVShows = async (pageNumber) => {
+export const getTVShows = async (pageNumber, limit) => {
     // Lấy response trả từ API
     let response = await fetch(
-        `https://phimapi.com/v1/api/danh-sach/tv-shows?page=${pageNumber}`
+        `https://phimapi.com/v1/api/danh-sach/tv-shows?page=${pageNumber}&limit=${limit}`
     );
     // Convert response to Data
     let data = await response.json();
